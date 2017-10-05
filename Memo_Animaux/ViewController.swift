@@ -1,11 +1,11 @@
-//========================================================================
-import UIKit
-import AVFoundation
-//========================================================================
+    //========================================================================
+    import UIKit
+    import AVFoundation
+    //========================================================================
 
-class ViewController: UIViewController {
+    class ViewController: UIViewController {
     
-    //--------------------------------------------------------------------
+    //---------------------Connection des boutons-----------------------------------------------
     
     @IBOutlet weak var back1: UIView!
     @IBOutlet weak var front1: UIView!
@@ -31,10 +31,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var front11: UIView!
     @IBOutlet weak var back12: UIView!
     @IBOutlet weak var front12: UIView!
-    
-    
-    //========================================================================
-    
+   
     
     @IBOutlet weak var img1: UIImageView!
     @IBOutlet weak var img2: UIImageView!
@@ -49,8 +46,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var img11: UIImageView!
     @IBOutlet weak var img12: UIImageView!
     
-    
-    //========================================================================
     
     @IBOutlet weak var card_1: UIView!
     @IBOutlet weak var card_2: UIView!
@@ -67,7 +62,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var btReset: UIButton!
     
-    //========================================================================
+    //=========================déclaration des variables===============================================
     
     var arrayOfImagesViews : [UIImageView]!
     var arrayOfAnimalsNames = ["chat.png", "chat.png", "coq.png", "coq.png", "lapin.png", "lapin.png",
@@ -86,45 +81,38 @@ class ViewController: UIViewController {
     
     var comptePs = 0
     
+    //------------------------execution du code des que le document est pret--------------------------------------------
     
-    
-    
-    //--------------------------------------------------------------------
-    
-        override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         cards = [card_1, card_2, card_3, card_4, card_5, card_6, card_7, card_8, card_9, card_10, card_11, card_12]
         arrayOfImagesViews = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12]
         randomAnimals()
         setImagesToCards()
-            
-            guard let urlFlipCard = Bundle.main.url(forResource: "slide", withExtension: "wav") else { return }
-            
-            
-            do {
-                try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
-                try AVAudioSession.sharedInstance().setActive(true)
+    
+    //------------------------SON--------------------------------------------
+
+        guard let urlFlipCard = Bundle.main.url(forResource: "slide", withExtension: "wav") else { return }
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
+            try AVAudioSession.sharedInstance().setActive(true)
                 
-                playerFlipCard = try AVAudioPlayer(contentsOf: urlFlipCard)
-                
-                
-            } catch let error {
-                print(error.localizedDescription)
-            }
-            
+            playerFlipCard = try AVAudioPlayer(contentsOf: urlFlipCard)
+        } catch let error {
+            print(error.localizedDescription)
+        }
     }
     
     //--------------------------------------------------------------------
-
     
         @IBAction func show(_ sender: UIButton) {
    
-            //================Ajout de Son=============
+    //================Ajout de Son=============
         
         
             playerFlipCard?.play()
             
-            //========================================================================
+    //===============Montrer les cartes=========================================================
             
             if arrayOfHidingFronts.count == 2 {
                 return
@@ -207,13 +195,11 @@ class ViewController: UIViewController {
                 break
         
             }
-            
-            
             arrayChosenCards.append(arrayOfRandomAnimalsNames[sender.tag])
             verification()
     }
 
-    //--------------------------------------------------------------------
+    //-----------------------Retourner les cartes---------------------------------------------
     
     func flipCard(from: UIView, to: UIView) {
         
@@ -229,24 +215,19 @@ class ViewController: UIViewController {
             to.isHidden = false
             
         })
-
     }
     
-    //--------------------------------------------------------------------
-    
-    
+    //---------------------------Appliquer une images pour chaque cartes-----------------------------------------
     
     func setImagesToCards() {
         var number = 0
         for imgView in arrayOfImagesViews {
             imgView.image = UIImage(named: arrayOfRandomAnimalsNames[number])
             number = number + 1
-            
         }
     }
     
-    
-    //--------------------------------------------------------------------
+    //------------------------- Melanger les cartes-------------------------------------------
 
     func randomAnimals () {
         let numberOfanimals = arrayOfAnimalsNames.count
@@ -255,22 +236,18 @@ class ViewController: UIViewController {
             arrayOfRandomAnimalsNames.append(arrayOfAnimalsNames[randomNumber])
             arrayOfAnimalsNames.remove(at: randomNumber)
         }
-        
     }
-    //--------------------------------------------------------------------
+    //-------------------------retourne les cartes si pas paires avec  compte a rebours-------------------------------------------
 
     func resetCards() {
         if arrayOfShowingBacks.count == 2 {
             Timer.scheduledTimer(timeInterval: 2,
                                  target: self, selector: (#selector(reFlip)),
                                  userInfo: nil, repeats: false)
-            
         }
-        
     }
     
-    
-    //--------------------------------------------------------------------
+    //-----------------------verification des cartes paires ---------------------------------------------
     
     func verification() {
         if arrayChosenCards.count == 2 {
@@ -295,16 +272,14 @@ class ViewController: UIViewController {
         }
     }
     
-    //--------------------------------------------------------------------
+    //--------------------faire retouner les cartes si elles sont pas identiques------------------------------------------------
     
-
     @objc func hideCards() {
         arrayOfCards[0].isHidden = true
         arrayOfCards[1].isHidden = true
         arrayOfCards = []
-}
-    
-    //--------------------------------------------------------------------
+    }
+    //-----------------------Tourner les cartes---------------------------------------------
     
     func reFlip() {
         for index in 0..<arrayOfShowingBacks.count{
@@ -314,8 +289,7 @@ class ViewController: UIViewController {
         arrayOfHidingFronts = []
     }
     
-    //-----------------------------------------------------------
-    
+    //-----------------bouton reset------------------------------------------
     
     @IBAction func reset(_ sender: UIButton) {
         for card in cards {
@@ -331,46 +305,10 @@ class ViewController: UIViewController {
         btReset.isHidden = true
     }
     
-     //-----------------------------------------------------------
+    //-----------------Afficher le bouton reset------------------------------------------
     
     func showResetButton(){
         btReset.isHidden = false
         comptePs = 0
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
